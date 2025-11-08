@@ -1,12 +1,6 @@
 from instagrapi import Client
 import _helpers as h
 
-# This is the script to get public data of user, and his/her followers.
-# The script do the sorting of user profiles by the number of followers of a given user
-    # 1. it gets the user info of each follower of the given user
-    # 2. it gets the number of followers of each follower of the given user
-    # 3. it sorts by the number of followers from (2) and outputs the biggest top 10-20 followers
-
 # adds a random delay between x and y seconds after each request (otherwise your account can be blocked)
 x = 1
 y = 3
