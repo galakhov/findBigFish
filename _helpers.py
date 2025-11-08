@@ -1,7 +1,8 @@
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired, ClientBadRequestError
-import logging, requests
+import logging, requests, sys
 from dotenv import dotenv_values
+from requests.exceptions import RetryError
 
 config = dotenv_values(".env")
 
@@ -19,17 +20,22 @@ def followers(client, user_name, limit: int = 100):
     except (ClientBadRequestError, requests.HTTPError) as exception:
         try:
             print(f"Bad request while getting {user_name}:\n{exception}\n\n")
-            print(f"Trying via user_followers_gql({user_name}, {limit})...\n")
+            print(f"Trying via user_followers_gql({user_name}, {limit}) method...\n")
             fws = client.user_followers_gql(user_id, amount = limit)
-        except Exception as exc:
-            print(f"Request failed while trying user_followers_gql({user_name}, {limit}):\n{exc}\n\n")
+        except (RetryError, Exception) as retry_error:
+            print(f"Retry error while getting requesting via user_followers_gql() {user_name}:\n{retry_error}\n\n")
             try:
-                print(f"Trying again using user_followers({user_id}, {limit})...\n")
+                print(f"Trying again using user_followers({user_id}, {limit}) method...\n")
                 fws = client.user_followers(user_id, amount = limit)
             except Exception as error:
                 print(f"Request failed while trying user_followers({user_name}, {limit}):\n{error}\n\n")
+                sys.exit("No followers could be fetched. Tried three different methods. Exiting...")
+        except Exception as exc:
+            print(f"Request failed while trying user_followers_gql({user_name}, {limit}):\n{exc}\n\n")
+            # sys.exit("No followers fetched. Exiting...")
     except Exception as e:
-        print(f"Failed to get {user_name}'s followers using three different methods:\n{e}\n\n")
+        print(f"Failed to get {user_name}'s followers:\n{e}\n\n")
+        sys.exit("No followers fetched using three different methods. Exiting...")
     return fws
 
 def write_followers_to_file(sorted_users_dict):
