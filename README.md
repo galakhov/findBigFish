@@ -32,6 +32,8 @@ In that case you'll have to wait for up to 24 hours to be able to follow users a
 #### - Some _update_headers_ error messages can appear while using 'extract_user_gql()' or 'user_info_by_username_gql()' functions.
 Please look into this issue first if that's your case: https://github.com/subzeroid/instagrapi/issues/2266
 
-I had to move _update_headers_ parameter in user_info_by_username_gql() function in user.py to make it work:
+I had to move _update_headers_ parameter in the user_info_by_username_gql() function in user.py to make it work:
 
 ![user_info_by_username_gql.jpg](user_info_by_username_gql.jpg)
+
+Apparently this issue still hasn't been fixed throughout the whole codebase in the [2.2.1](https://github.com/subzeroid/instagrapi/releases/tag/2.2.1) release of [instagrapi](https://github.com/subzeroid/instagrapi).
