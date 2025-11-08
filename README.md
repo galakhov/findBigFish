@@ -1,4 +1,4 @@
-# This is the script to get the public data of a user and the data of his/her followers.
+# This is the script to get the public data of a user on Instagram and the data of his/her followers.
 
 ## The biggest followers of a user will be collected and either auto followed ([instagrapi](https://github.com/subzeroid/instagrapi) is being used) or saved to a file.
 
@@ -15,6 +15,13 @@ If you need to collect the usernames first, use the following Chrome Extensions:
 `pip install instagrapi`
 
 Read their [docs](https://subzeroid.github.io/instagrapi/usage-guide/user.html).
+
+#### Change the values of the following variables in main.py:
+ - _limit_followers_count_,
+ - _add_users_with_num_of_followers_, and 
+ - _limit_top_
+
+according to your needs.
 
 ## Known issues
 #### - After some time of using the script, especially the auto follow function, you might get a message:
