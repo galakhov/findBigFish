@@ -5,7 +5,7 @@ import _helpers as h
 x = 1
 y = 3
 # collect data of the first 'limit_followers_count' followers (more data = more time is needed to collect it)
-limit_followers_count = 20
+limit_followers_count = 200
 # consider only users with this number of followers or more
 add_users_with_num_of_followers = 800
 

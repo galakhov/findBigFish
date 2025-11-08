@@ -1,9 +1,12 @@
 from instagrapi import Client
 from instagrapi.exceptions import LoginRequired
 import logging
+from dotenv import dotenv_values
 
-USERNAME = 'your_ig@mail.com'
-PASSWORD = 'your_PASSWORD'
+config = dotenv_values(".env")
+
+USERNAME = config['USERNAME']
+PASSWORD = config['PASSWORD']
 
 logger = logging.getLogger()
 

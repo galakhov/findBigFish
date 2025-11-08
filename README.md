@@ -15,8 +15,12 @@ If you need to collect the usernames first, use the following Chrome Extensions:
 `pip install instagrapi`
 
 Read their [docs](https://subzeroid.github.io/instagrapi/usage-guide/user.html).
+### Optional:
+`pip install python-dotenv`
 
-#### Change the values of the following variables in main.py:
+See & change USERNAME & PASSWORD at the top of [_helpers.py](_helpers.py).
+
+### Change the values of the following variables in [main.py](main.py):
  - _limit_followers_count_,
  - _add_users_with_num_of_followers_, and 
  - _limit_top_
