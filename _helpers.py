@@ -1,6 +1,6 @@
 from instagrapi import Client
-from instagrapi.exceptions import LoginRequired
-import logging
+from instagrapi.exceptions import LoginRequired, ClientBadRequestError
+import logging, requests
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
@@ -11,11 +11,25 @@ PASSWORD = config['PASSWORD']
 logger = logging.getLogger()
 
 def followers(client, user_name, limit: int = 100):
+    fws = {}
+    user_id = client.user_id_from_username(user_name)
     try:
-        fws = client.user_followers_v1(client.user_id_from_username(user_name), amount = limit)
+        print(f"Trying using user_followers_v1({user_id}, {limit})...\n")
+        fws = client.user_followers_v1(user_id, amount = limit)
+    except (ClientBadRequestError, requests.HTTPError) as exception:
+        try:
+            print(f"Bad request while getting {user_name}:\n{exception}\n\n")
+            print(f"Trying via user_followers_gql({user_name}, {limit})...\n")
+            fws = client.user_followers_gql(user_id, amount = limit)
+        except Exception as exc:
+            print(f"Request failed while trying user_followers_gql({user_name}, {limit}):\n{exc}\n\n")
+            try:
+                print(f"Trying again using user_followers({user_id}, {limit})...\n")
+                fws = client.user_followers(user_id, amount = limit)
+            except Exception as error:
+                print(f"Request failed while trying user_followers({user_name}, {limit}):\n{error}\n\n")
     except Exception as e:
-        print(f"Failed to get {user_name}'s followers: {e}, trying again...\n")
-        fws = client.user_followers(client.user_id_from_username(user_name), amount = 500)
+        print(f"Failed to get {user_name}'s followers using three different methods:\n{e}\n\n")
     return fws
 
 def login_user(client: Client):

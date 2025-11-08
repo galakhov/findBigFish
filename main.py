@@ -1,11 +1,12 @@
 from instagrapi import Client
 import _helpers as h
+import sys
 
 # adds a random delay between x and y seconds after each request (otherwise your account can be blocked)
 x = 1
 y = 3
 # collect data of the first 'limit_followers_count' followers (more data = more time is needed to collect it)
-limit_followers_count = 200
+limit_followers_count = 500
 # consider only users with this number of followers or more
 add_users_with_num_of_followers = 800
 
@@ -13,6 +14,7 @@ add_users_with_num_of_followers = 800
 cl = Client()
 cl.delay_range = [x, y]
 h.login_user(cl)
+cl.dump_settings("session.json")
 
 # https://subzeroid.github.io/instagrapi/usage-guide/best-practices.html
 # before_ip = cl._send_public_request("https://api.ipify.org/")
@@ -27,6 +29,9 @@ print(f"You've entered '{username}', getting the user data...\n")
 
 result = h.followers(cl, username, limit_followers_count)
 followers_count = len(result)
+if followers_count <= 0:
+    sys.exit("No followers found. Exiting...")
+
 print(f"Collecting data for {followers_count} followers of '{username}'.\nThis may last between {followers_count * x * 2} and {followers_count * y * 2} seconds or {(followers_count * x * 2 / 60):.2f} and {(followers_count * y * 2 / 60):.2f} minutes...\n")
 
 users = []
@@ -72,8 +77,9 @@ if user_input.lower() in ["yes", "y"]:
     print("Continuing...")
     for users_row in sorted_users:
         try:
-            print(f"Start following user: {users_row['un']}")
+            print(f"Start following user: {users_row['un']}...")
             cl.user_follow(users_row['id'])
+            print(f"Followed user: {users_row['un']} ({users_row['fw']} followers).")
             with open("success.log", "a") as log:
                 log.write(f"Followed user: {users_row['un']} ({users_row['fw']} followers)\n")
         except Exception as exc:
