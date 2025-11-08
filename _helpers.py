@@ -55,16 +55,16 @@ def follow_users_from_file(cl, file_name: str):
         for row in f:
             if bool(row):
                 try:
-                    row = str(row)
+                    row = str(row.strip())
                     user_id = cl.user_id_from_username(row)
                     cl.user_follow(user_id)
                     i += 1
                     print(f"Followed user: {row}")
-                    print(f"Total followed so far: {i}")
+                    print(f"Total profiles followed so far: {i}")
                     with open("success.log", "a") as log:
                         log.write(f"Followed user: {row}\n")
                 except Exception as e:
-                    print(f"Failed to follow {row}: {e}")
+                    print(f"Failed to follow {row}:\n{e}\n\n")
                     with open("errors.log", "a") as log:
                         log.write(f"{row}: {e}\n")
                     continue
