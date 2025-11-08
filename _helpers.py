@@ -47,6 +47,28 @@ def write_followers_to_file(sorted_users_dict):
         cnt += 1
     print(f"Total number of saved profiles: {cnt}. For more information, see “to_follow.log file.”\n")
 
+def follow_users_from_file(cl, file_name: str):
+    with open(file_name) as my_file:
+        print(f"Reading your file: {file_name}...")
+        f = my_file.read().split("\n")
+        i = 0
+        for row in f:
+            if bool(row):
+                try:
+                    row = str(row)
+                    user_id = cl.user_id_from_username(row)
+                    cl.user_follow(user_id)
+                    i += 1
+                    print(f"Followed user: {row}")
+                    print(f"Total followed so far: {i}")
+                    with open("success.log", "a") as log:
+                        log.write(f"Followed user: {row}\n")
+                except Exception as e:
+                    print(f"Failed to follow {row}: {e}")
+                    with open("errors.log", "a") as log:
+                        log.write(f"{row}: {e}\n")
+                    continue
+
 def login_user(client: Client):
     """
     Attempts to log in to Instagram using either the provided session information
