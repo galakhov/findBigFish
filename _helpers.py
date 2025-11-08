@@ -32,6 +32,15 @@ def followers(client, user_name, limit: int = 100):
         print(f"Failed to get {user_name}'s followers using three different methods:\n{e}\n\n")
     return fws
 
+def write_followers_to_file(sorted_users_dict):
+    print(f"\nSaving {len(sorted_users_dict)} usernames to the to_follow.log file in the current directory.\n")
+    cnt = 0
+    for users_row in sorted_users_dict:
+        with open("to_follow.log", "a") as log_usernames:
+            log_usernames.write(f"{users_row['un']}\n")
+        cnt += 1
+    print(f"Total number of saved profiles: {cnt}. For more information, see “to_follow.log file.”\n")
+
 def login_user(client: Client):
     """
     Attempts to log in to Instagram using either the provided session information

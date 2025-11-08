@@ -45,7 +45,7 @@ sorted_users = sorted(users, key = lambda x:x['fw'], reverse = True)
 
 print(f"Collected {len(sorted_users)} big followers of '{username}'.\n")
 
-limit_top = 10
+limit_top = 15
 limit = len(sorted_users) if (len(sorted_users) < limit_top * 2) else limit_top
 print(f"\nListing the TOP {limit} big followers of '{username}':\n")
 print('ID\t\t\tUsername\t\t\tNumber of followers\n')
@@ -56,25 +56,17 @@ for user in sorted_users:
     if index == limit:
         break
 
-"""
-#0 list(41) 
-    [0] => dict(3) 
-        ['id'] => str(9) "456891722"
-        ['un'] => str(10) "albana.bee"
-        ['fw'] => int(21172) 
-    [1] => dict(3) 
-        ['id'] => str(10) "8484023319"
-        ['un'] => str(15) "richardeisenach"
-        ['fw'] => int(20428) 
-    [2] => dict(3) 
-        ['id'] => str(10) "9250205401"
-        ['un'] => str(22) "stadtstrandduesseldorf"
-        ['fw'] => int(17623)
-"""
-
-user_input = input(f"\nDo you want to auto follow these {len(sorted_users)} users with this account? (yes/no): ")
+print(f"\nOverall {len(sorted_users)} big followers with ≥{add_users_with_num_of_followers} each of '{username}' were found.\n")
+user_input = input(f"\nDo you want to auto follow these users with this account (you can specify how many in the next step)? (yes/no): ")
 if user_input.lower() in ["yes", "y"]:
-    print("Continuing...")
+    num_of_profiles_to_follow = input(
+        f"\nHow many profiles out of {len(sorted_users)} do you want to follow (please enter a valid number)? Normally, Instagram accepts up to 30 follow operations/session: ")
+    max_val = int(num_of_profiles_to_follow.strip())
+    if not isinstance(max_val, int):
+        print(f"\nYour input was incorrect... Saving profiles into a file...\n")
+        h.write_followers_to_file(sorted_users)
+    print(f"Your input was to follow {max_val} profiles. Starting the auto-following process...\n")
+    count = 0
     for users_row in sorted_users:
         try:
             print(f"Start following user: {users_row['un']}...")
@@ -82,13 +74,14 @@ if user_input.lower() in ["yes", "y"]:
             print(f"Followed user: {users_row['un']} ({users_row['fw']} followers).")
             with open("success.log", "a") as log:
                 log.write(f"Followed user: {users_row['un']} ({users_row['fw']} followers)\n")
+            count += 1
+            print(f"Total number of big profiles followed up to now: {count} out of {max_val}.")
+            if count >= max_val:
+                break
         except Exception as exc:
             print(f"Failed to follow {users_row['un']}: {exc}")
             with open("errors.log", "a") as log_err:
                 log_err.write(f"{users_row['un']}: {exc}\n")
         continue
 else:
-    print(f"\nStopping...\nSaving {len(sorted_users)} usernames to the to_follow.log file in the current directory.\n")
-    for users_row in sorted_users:
-        with open("to_follow.log", "a") as log_usernames:
-            log_usernames.write(f"{users_row['un']}\n")
+    h.write_followers_to_file(sorted_users)
