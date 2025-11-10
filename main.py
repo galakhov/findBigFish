@@ -30,7 +30,7 @@ mode = input("- If you want to follow the users from your file, enter [1]\n- If 
 if mode == "1":
     h.follow_users_from_file(cl, file_name = "to_follow.log")
 elif mode == "2" or mode == "3":
-    username = input("Enter the username of the profile you want to analyse": ")
+    username = input("Enter the username of the profile you want to analyse: ")
     print(f"You've entered '{username}', getting the user data...\n")
 
     if mode == "3":
