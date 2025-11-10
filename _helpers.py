@@ -11,6 +11,32 @@ PASSWORD = config['PASSWORD']
 
 logger = logging.getLogger()
 
+def following(client, user_name, limit: int = 100):
+    res = {}
+    user_id = client.user_id_from_username(user_name)
+    try:
+        print(f"Trying using user_following_v1({user_id}, {limit})...\n")
+        res = client.user_following_v1(user_id, amount = limit)
+    except (ClientBadRequestError, requests.HTTPError) as exception:
+        try:
+            print(f"Bad request while getting {user_name}:\n{exception}\n\n")
+            print(f"Trying via user_following_gql({user_name}, {limit}) method...\n")
+            res = client.user_following_gql(user_id, amount = limit)
+        except (RetryError, Exception) as retry_error:
+            print(f"Retry error while getting requesting via user_following_gql() {user_name}:\n{retry_error}\n\n")
+            try:
+                print(f"Trying again using user_following({user_id}, {limit}) method...\n")
+                res = client.user_following(user_id, amount = limit)
+            except Exception as error:
+                print(f"Request failed while trying user_following({user_name}, {limit}):\n{error}\n\n")
+                sys.exit("No profiles could be fetched. Tried three different methods. Exiting...")
+        except Exception as exc:
+            print(f"Request failed while trying user_following_gql({user_name}, {limit}):\n{exc}\n\n")
+    except Exception as e:
+        print(f"Failed to get profiles {user_name}'s following:\n{e}\n\n")
+        sys.exit("No profiles fetched using three different methods. Exiting...")
+    return res
+
 def followers(client, user_name, limit: int = 100):
     fws = {}
     user_id = client.user_id_from_username(user_name)
