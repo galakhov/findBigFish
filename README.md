@@ -31,7 +31,7 @@ Read their [docs](https://subzeroid.github.io/instagrapi/usage-guide/user.html).
 ### Optional:
 `pip install python-dotenv`
 
-See & change USERNAME & PASSWORD at the top of [_helpers.py](_helpers.py).
+See & change USERNAME & PASSWORD at the top of [_helpers.py](_helpers.py). Those values are being read from the .env file located in the current directory. I've provided an [example](your.env) of this file, just don't forget to rename it.
 
 ### Change the values of the following variables in [main.py](main.py) according to your needs:
  - __limit_followers_count__ – how many followers to read/collect/analyse | default: 200,
