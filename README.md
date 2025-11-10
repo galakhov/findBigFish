@@ -5,20 +5,20 @@
 
 My script is based on [instagrapi](https://github.com/subzeroid/instagrapi) library.
 
-### 1) This script reads a text file line by line with some delay. The list should be a plain text file (without any headers) with usernames on each line in order for the script to work auto-follow them.
+### 1) This script reads a text file line by line with some delay. The list should be a plain text file (without any headers) with usernames on each line in order for the script to work correctly & to auto-follow them.
 __Warning__: there's no limit of requests sent to Instagram in this mode: each line in the file will produce 2 requests.
 For instance, if the file contains 30 usernames, 60 requests will be made.
-Instagram may block your IP for 24-72 hours. It's recommended to use [proxies](https://subzeroid.github.io/instagrapi/usage-guide/best-practices.html).
+Instagram may block your IP for 24-72 hours. It's recommended to use [proxies](https://subzeroid.github.io/instagrapi/usage-guide/best-practices.html) (I haven't implemented the proxy function).
 
 ### 2) The major followers of a user will be collected, sorted, displayed and either auto-followed or saved to a file.
 
-### 3) The major profiles a user is following will be collected, sorted, displayed and either auto-followed ([instagrapi](https://github.com/subzeroid/instagrapi) is being used) or saved to a file.
+### 3) The major profiles a user is following will be collected, sorted, displayed and either auto-followed or saved to a file.
 
 ### The script also does the sorting of the collected user profiles by the number of followers of each user profile:
 
     1. it gets the user info of each profile of an analysed user
-    2. it gets the number of followers of each profiles that's being analysed
-    3. it sorts by the number of followers from (2) and outputs the top 10-20 followers (depending on the 'limit_top' variable).
+    2. it gets the number of followers of each profile that's being analysed
+    3. it sorts by the number of followers from (2) and outputs the top 10-20 followers (depending on the 'limit_top' variable; see below for this and other values).
 
 If you need to collect the usernames first, use the following Chrome Extensions: [igfollow-follower-export](https://chromewebstore.google.com/detail/igfollow-follower-export) or 
 [instagram-follower-collector](https://phantombuster.com/automations/instagram/7175/instagram-follower-collector) or alike.
@@ -34,10 +34,10 @@ Read their [docs](https://subzeroid.github.io/instagrapi/usage-guide/user.html).
 See & change USERNAME & PASSWORD at the top of [_helpers.py](_helpers.py).
 
 ### Change the values of the following variables in [main.py](main.py) according to your needs:
- - __limit_followers_count__ – how many followers to read/collect/analyse,
- - __limit_following_count__ – how many profiles the user you've entered is following to read/collect/analyse,
- - __add_users_with_num_of_followers__ – only collect & auto-follow user profiles with that value, and 
- - __limit_top__ – limit the list of top users to this value.
+ - __limit_followers_count__ – how many followers to read/collect/analyse | default: 200,
+ - __limit_following_count__ – how many profiles the user you've entered is following to read/collect/analyse | default: 200,
+ - __add_users_with_num_of_followers__ – only collect & auto-follow user profiles with that value | default: 800,
+ - __limit_top__ – limit the list of top users to this value  | default: 15.
 
 ## Known issues
 #### - After some time of using the script, especially the auto follow function, you might get a message:

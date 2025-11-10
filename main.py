@@ -6,10 +6,11 @@ import sys
 x = 1
 y = 3
 # collect data of the first 'limit_followers_count' followers (more data = more time is needed to collect it)
-limit_followers_count = 500
+limit_followers_count = 200
 limit_following_count = 200
 # consider only users with this number of followers or more
 add_users_with_num_of_followers = 800
+limit_top = 15 # if there're less than 30 top user profiles, limit_top will be multiplied by 2
 
 # establish the connection & login
 cl = Client()
@@ -70,7 +71,6 @@ elif mode == "2" or mode == "3":
 
     print(f"Collected and sorted {len(sorted_users)} major profiles related to '{username}'.\n")
 
-    limit_top = 15
     limit = len(sorted_users) if (len(sorted_users) < limit_top * 2) else limit_top
     print(f"\nListing the TOP {limit} major profiles related to '{username}':\n")
     print('ID\t\t\tUsername\t\t\tNumber of profiles\n')
